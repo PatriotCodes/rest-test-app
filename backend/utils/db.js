@@ -6,4 +6,5 @@ mongoose.connect('mongodb://ds125683.mlab.com:25683/rest-test-task', {
         password: 'UEAANujTtnB99jx3'
     },
     useNewUrlParser: true,
+    useCreateIndex: true,
 });
