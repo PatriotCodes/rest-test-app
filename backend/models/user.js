@@ -31,6 +31,13 @@ UserSchema.pre('save', function (next) {
     })
 });
 
+UserSchema.methods.isValidPassword = async function(password) {
+    var user = this;
+    bcrypt.compare(password, user.password).then(function(res) {
+        return res;
+    });
+};
+
 UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 mongoose.model('User', UserSchema);
 

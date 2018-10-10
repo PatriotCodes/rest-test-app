@@ -8,18 +8,21 @@ const JWTStrategy = passportJWT.Strategy;
 
 var user = require('./user');
 
-// admin 9BM7w@TV
 passport.use(new LocalStrategy({
         usernameField: 'login',
         passwordField: 'password'
     },
     function (login, password, cb) {
-        return user.findOne({login, password})
+        return user.findOne({login})
             .then(user => {
                 if (!user) {
-                    return cb(null, false, {message: 'Incorrect login or password.'});
+                    return cb(null, false, {message: 'User with such login is not found.'});
                 }
-                return cb(null, user.toJSON(), {message: 'Logged In Successfully'});
+                if (user.isValidPassword(password)) {
+                    return cb(null, user.toJSON(), {message: 'Logged In Successfully'});
+                } else {
+                    return cb(null, false, {message: 'Wrong Password.'});
+                }
             })
             .catch(err => cb(err));
     }

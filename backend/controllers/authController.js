@@ -3,8 +3,9 @@ const router  = express.Router();
 
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+var user = require('../models/user');
 
-
+// test qwerty
 // LOGIN
 router.post('/login', function (req, res, next) {
     passport.authenticate('local', {session: false}, (err, user, info) => {
@@ -22,6 +23,19 @@ router.post('/login', function (req, res, next) {
             return res.json({user, token});
         });
     })(req, res);
+});
+
+// REGISTRATION
+router.post('/register', function (req, res) {
+    user.create({
+            login : req.body.login,
+            email : req.body.email,
+            password : req.body.password
+        },
+        function (err, user) {
+            if (err) return res.status(500).send("There was a problem creating account.");
+            res.status(200).send(user);
+        });
 });
 
 module.exports = router;
