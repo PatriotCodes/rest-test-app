@@ -4,14 +4,14 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: './src/index.jsx',
     output: {
-        path: path.resolve('dist'),
+        path: path.resolve('build'),
         filename: 'bundle.js'
     },
     resolve: {
         extensions: ['.js', '.jsx']
     },
     module: {
-        rules: [
+        loaders: [
             {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
@@ -19,6 +19,10 @@ module.exports = {
                 query: {
                     presets: ['react', 'es2015']
                 }
+            },
+            {
+                test:/\.(s*)css$/,
+                use:['style-loader','css-loader', 'sass-loader']
             }
         ]
     },
