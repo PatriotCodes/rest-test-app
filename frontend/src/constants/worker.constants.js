@@ -1,0 +1,6 @@
+export const workerConstants = {
+    GET_ALL: 'GET_ALL',
+    CREATE_WORKER: 'CREATE_WORKER',
+    DELETE_WORKER: 'DELETE_WORKER',
+    UPDATE_WORKER: 'UPDATE_WORKER'
+};
