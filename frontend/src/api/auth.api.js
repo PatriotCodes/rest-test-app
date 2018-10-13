@@ -8,7 +8,9 @@ export const authApi = {
 function login(login, password) {
     const requestOptions = {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+        },
         body: JSON.stringify({login, password})
     };
     return fetch(apiConstants.URL + '/auth/login', requestOptions)
