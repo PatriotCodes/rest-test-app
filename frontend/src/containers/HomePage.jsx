@@ -8,7 +8,7 @@ class HomePage extends React.Component {
         const { user } = this.props;
         return (
             <div className="col-md-6 col-md-offset-3">
-                <h1>Hi {user}!</h1>
+                <h1>Hi, {user.user.login}!</h1>
                 <p>You're logged in with React & JWT!!</p>
                 <p>
                     <Link to="/login">Logout</Link>

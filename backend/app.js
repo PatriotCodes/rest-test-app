@@ -22,4 +22,7 @@ app.use('/users', passport.authenticate('jwt', {session: false}), userController
 var authController = require('./controllers/authController');
 app.use('/auth', authController);
 
+var workerController = require('./controllers/workerController');
+app.use('/workers', passport.authenticate('jwt', {session: false}), workerController);
+
 module.exports = app;
