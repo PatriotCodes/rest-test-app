@@ -31,6 +31,7 @@ class HomePage extends React.Component {
                         <th>Contact Info</th>
                         <th>Salary</th>
                         <th>Position</th>
+                        <th>Controls</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -41,12 +42,20 @@ class HomePage extends React.Component {
                             <td>{worker.contactInfo}</td>
                             <td>{worker.salary}</td>
                             <td>{worker.position}</td>
+                            <td>
+                                <button className="btn btn-primary">Update</button>
+                                <button className="btn btn-danger ml-15" onClick={() => this.handleDelete(worker._id)}>Delete</button>
+                            </td>
                         </tr>
                     )}
                     </tbody>
                 </table>}
             </div>
         );
+    }
+
+    handleDelete(id) {
+        this.props.dispatch(workerActions.deleteWorker(id));
     }
 }
 

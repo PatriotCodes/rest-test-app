@@ -3,6 +3,7 @@ import { workerApi } from '../api';
 
 export const workerActions = {
     getAll,
+    deleteWorker,
 };
 
 export function getAll() {
@@ -19,5 +20,22 @@ export function getAll() {
 function getAllSuccess(workers) {
     return (dispatch) => {
         dispatch({type: workerConstants.GET_ALL, workers: workers});
+    };
+}
+
+export function deleteWorker(id) {
+    return (dispatch) => {
+        dispatch({type: workerConstants.LOADING});
+        return workerApi.deleteByID(id).then(() => {
+            dispatch(deleteWorkerSuccess(id));
+        }).catch(error => {
+            throw(error);
+        });
+    };
+}
+
+function deleteWorkerSuccess(id) {
+    return (dispatch) => {
+        dispatch({type: workerConstants.DELETE_WORKER, id: id});
     };
 }
