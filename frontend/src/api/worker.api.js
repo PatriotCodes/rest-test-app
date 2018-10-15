@@ -3,7 +3,8 @@ import {authHeader} from "../helpers";
 
 export const workerApi = {
     getAll,
-    deleteByID
+    deleteByID,
+    create
 };
 
 function getAll() {
@@ -11,7 +12,6 @@ function getAll() {
         method: 'GET',
         headers: authHeader(),
     };
-    console.log(authHeader());
     return fetch(apiConstants.URL + '/workers', requestOptions).then(handleResponse);
 }
 
@@ -20,8 +20,16 @@ function deleteByID(id) {
         method: 'DELETE',
         headers: authHeader(),
     };
-    console.log(authHeader());
     return fetch(apiConstants.URL + '/workers/' + id, requestOptions).then(handleResponse);
+}
+
+function create(worker) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(worker),
+    };
+    return fetch(apiConstants.URL + '/workers/', requestOptions).then(handleResponse);
 }
 
 function logout() {

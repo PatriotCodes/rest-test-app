@@ -4,6 +4,7 @@ import { workerApi } from '../api';
 export const workerActions = {
     getAll,
     deleteWorker,
+    createWorker,
 };
 
 export function getAll() {
@@ -37,5 +38,22 @@ export function deleteWorker(id) {
 function deleteWorkerSuccess(id) {
     return (dispatch) => {
         dispatch({type: workerConstants.DELETE_WORKER, id: id});
+    };
+}
+
+export function createWorker(worker) {
+    return (dispatch) => {
+        dispatch({type: workerConstants.LOADING});
+        return workerApi.create(worker).then(() => {
+            dispatch(createWorkerSuccess(worker));
+        }).catch(error => {
+            throw(error);
+        });
+    };
+}
+
+function createWorkerSuccess(worker) {
+    return (dispatch) => {
+        dispatch({type: workerConstants.CREATE_WORKER, worker: worker});
     };
 }

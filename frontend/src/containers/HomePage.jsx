@@ -2,10 +2,20 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
+import {Modal} from "../components";
 import {workerActions} from '../actions/worker.actions';
+import {WorkerCreate} from './WorkerCreate';
 import '../assets/scss/styles.scss';
 
 class HomePage extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            showCreate : false,
+        };
+        this.hideCreate = this.hideCreate.bind(this);
+    }
 
     componentDidMount() {
         this.props.dispatch(workerActions.getAll());
@@ -15,13 +25,16 @@ class HomePage extends React.Component {
         return (
             <div className="col-sm-12">
                 <div className="home-top">
-                    <button className="btn btn-success">
-                        Add New
+                    <button className="btn btn-success" onClick={() => this.showCreate()}>
+                        Add New Worker
                     </button>
                     <button className="btn btn-default float-right">
                         <Link to="/login">Logout</Link>
                     </button>
                 </div>
+                <Modal show={this.state.showCreate}>
+                    <WorkerCreate closeHandler={this.hideCreate}/>
+                </Modal>
                 {!this.props.loading &&
                 <table className="table table-condensed">
                     <thead>
@@ -49,7 +62,8 @@ class HomePage extends React.Component {
                         </tr>
                     )}
                     </tbody>
-                </table>}
+                </table>
+                }
             </div>
         );
     }
@@ -57,6 +71,14 @@ class HomePage extends React.Component {
     handleDelete(id) {
         this.props.dispatch(workerActions.deleteWorker(id));
     }
+
+    showCreate() {
+        this.setState({ showCreate: true });
+    };
+
+    hideCreate() {
+        this.setState({ showCreate: false });
+    };
 }
 
 function mapStateToProps(state) {
