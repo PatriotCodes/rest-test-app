@@ -9,10 +9,29 @@ var worker = require('../models/worker');
 
 // GET ALL
 router.get('/', function (req, res) {
-    worker.find({}, function (err, workers) {
-        if (err) return res.status(500).send("There was a problem receiving workers.");
-        res.status(200).send(workers);
-    });
+    let pageNo = parseInt(req.query.pageNo);
+    let size = parseInt(req.query.size);
+    let query = {};
+    if(pageNo < 0 || pageNo === 0) {
+        let response = {"error" : true,"message" : "invalid page number, should start with 1"};
+        return res.json(response)
+    }
+    query.skip = size * (pageNo - 1);
+    query.limit = size;
+    worker.count({},function(err,totalCount) {
+        if(err) {
+            response = {"error" : true,"message" : "Error fetching data"}
+        }
+        worker.find({},{},query,function(err,data) {
+            if(err) {
+                response = {"error" : true,"message" : "Error fetching data"};
+            } else {
+                let totalPages = Math.ceil(totalCount / size);
+                response = {"error" : false,"message" : data,"pages": totalPages};
+            }
+            res.json(response);
+        });
+    })
 });
 
 // CREATE

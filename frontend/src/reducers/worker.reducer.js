@@ -1,6 +1,6 @@
 import { workerConstants } from '../constants/worker.constants';
 
-let initialState = { workers: [], loading: true };
+let initialState = { workers: [], loading: true, totalPages: 0 };
 // TODO: fix EDIT_WORKER reducer
 
 export function workerReducer(state = initialState, action) {
@@ -11,7 +11,11 @@ export function workerReducer(state = initialState, action) {
                 loading: false
             };
         case workerConstants.GET_ALL:
-            state = Object.assign({}, state, {workers: action.workers, loading: false});
+            state = Object.assign({}, state, {
+                workers: action.workers.message,
+                loading: false,
+                totalPages: action.workers.pages
+            });
             return state;
         case workerConstants.DELETE_WORKER:
             return {

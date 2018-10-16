@@ -9,12 +9,21 @@ export const workerApi = {
     search
 };
 
-function getAll() {
+function getAll(pageNo, size) {
+    let page = '';
+    let num = '';
+    if (size !== '' && size !== 0 && size != null) {
+        num = 'size=' + size;
+    }
+    if (pageNo !== '' && pageNo !== 0 && pageNo != null) {
+        page = '&pageNo=' + pageNo;
+    }
+    page = num !== '' ? page : '';
     const requestOptions = {
         method: 'GET',
         headers: authHeader(),
     };
-    return fetch(apiConstants.URL + '/workers', requestOptions).then(handleResponse);
+    return fetch(apiConstants.URL + '/workers?' + num + '&' + page, requestOptions).then(handleResponse);
 }
 
 function deleteByID(id) {

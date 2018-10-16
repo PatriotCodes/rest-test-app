@@ -6,3 +6,5 @@ export const workerConstants = {
     LOADING: 'LOADING',
     SEARCH_WORKER: 'SEARCH_WORKER',
 };
+
+export const PAGE_SIZE = 5;

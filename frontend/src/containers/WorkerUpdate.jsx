@@ -73,7 +73,7 @@ class WorkerUpdate extends React.Component {
                 </div>
                 <div className="form-group">
                     <label>Gender</label>
-                    <select className="form-control" name="gender" onChange={this.handleInputChange}>
+                    <select className="form-control" value={this.state.gender} name="gender" onChange={this.handleInputChange}>
                         <option>male</option>
                         <option>female</option>
                     </select>

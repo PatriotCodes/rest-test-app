@@ -9,10 +9,10 @@ export const workerActions = {
     searchWorker,
 };
 
-export function getAll() {
+export function getAll(pageNo, size) {
     return (dispatch) => {
         dispatch({type: workerConstants.LOADING});
-        return workerApi.getAll().then(workers => {
+        return workerApi.getAll(pageNo,size).then(workers => {
             dispatch(getAllSuccess(workers));
         }).catch(error => {
             throw(error);

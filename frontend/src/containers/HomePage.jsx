@@ -6,6 +6,7 @@ import {Modal} from "../components";
 import {workerActions} from '../actions/worker.actions';
 import {WorkerCreate} from './WorkerCreate';
 import {WorkerUpdate} from "./WorkerUpdate";
+import {PAGE_SIZE} from "../constants";
 import '../assets/scss/styles.scss';
 
 class HomePage extends React.Component {
@@ -24,6 +25,7 @@ class HomePage extends React.Component {
                 position: '',
             },
             searchQuery: '',
+            currentPage: 1,
         };
         this.hideCreate = this.hideCreate.bind(this);
         this.hideUpdate = this.hideUpdate.bind(this);
@@ -31,7 +33,21 @@ class HomePage extends React.Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(workerActions.getAll());
+        this.props.dispatch(workerActions.getAll(this.state.currentPage,PAGE_SIZE));
+    }
+
+    createPagination() {
+        let ul = [];
+        for (let i = 1; i <= this.props.pages; i++) {
+            ul.push(<li onClick={() => this.getPage(i,PAGE_SIZE)} key={i}><span>{i}</span></li>)
+        }
+        return ul;
+    };
+
+    getPage(page,size) {
+        if (page > 0) {
+            this.props.dispatch(workerActions.getAll(page, size));
+        }
     }
 
     render() {
@@ -65,36 +81,46 @@ class HomePage extends React.Component {
                         <WorkerUpdate closeHandler={this.hideUpdate} worker={this.state.editedWorker}/>
                     </Modal>
                     {!this.props.loading &&
-                    <table className="table table-condensed">
-                        <thead>
-                        <tr>
-                            <th>Full Name</th>
-                            <th>Gender</th>
-                            <th>Contact Info</th>
-                            <th>Salary</th>
-                            <th>Position</th>
-                            <th>Controls</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {this.props.workers.map((worker) =>
-                            <tr key={worker._id}>
-                                <td>{worker.fullName}</td>
-                                <td>{worker.gender}</td>
-                                <td>{worker.contactInfo}</td>
-                                <td>{worker.salary}</td>
-                                <td>{worker.position}</td>
-                                <td>
-                                    <button className="btn btn-primary" onClick={() => this.showUpdate(worker)}>Update
-                                    </button>
-                                    <button className="btn btn-danger ml-15"
-                                            onClick={() => this.handleDelete(worker._id)}>Delete
-                                    </button>
-                                </td>
+                    <div>
+                        <table className="table table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Gender</th>
+                                <th>Contact Info</th>
+                                <th>Salary</th>
+                                <th>Position</th>
+                                <th>Controls</th>
                             </tr>
-                        )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {this.props.workers.map((worker) =>
+                                <tr key={worker._id}>
+                                    <td>{worker.fullName}</td>
+                                    <td>{worker.gender}</td>
+                                    <td>{worker.contactInfo}</td>
+                                    <td>{worker.salary}</td>
+                                    <td>{worker.position}</td>
+                                    <td>
+                                        <button className="btn btn-primary"
+                                                onClick={() => this.showUpdate(worker)}>Update
+                                        </button>
+                                        <button className="btn btn-danger ml-15"
+                                                onClick={() => this.handleDelete(worker._id)}>Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            )}
+                            </tbody>
+                        </table>
+                        {this.props.pages !== null &&
+                        <div className="pagination-wrapper">
+                            <ul className="pagination">
+                                {this.createPagination()}
+                            </ul>
+                        </div>
+                        }
+                    </div>
                     }
                 </div>
             </div>
@@ -146,6 +172,7 @@ function mapStateToProps(state) {
     return {
         workers: state.workerReducer.workers,
         loading: state.workerReducer.loading,
+        pages: state.workerReducer.totalPages,
     }
 }
 
