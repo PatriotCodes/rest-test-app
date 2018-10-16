@@ -23,9 +23,11 @@ class HomePage extends React.Component {
                 salary: '',
                 position: '',
             },
+            searchQuery: '',
         };
         this.hideCreate = this.hideCreate.bind(this);
         this.hideUpdate = this.hideUpdate.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     componentDidMount() {
@@ -36,6 +38,17 @@ class HomePage extends React.Component {
         return (
             <div className="col-sm-12">
                 <div className="home-top">
+                    <div className="search-wrap">
+                        <input type="text" className="form-control" placeholder="Search..."
+                               name="searchQuery" onChange={this.handleInputChange}/>
+                        <button className="btn btn-primary"
+                                onClick={() => this.props.dispatch(workerActions.searchWorker(this.state.searchQuery))}>
+                            Search
+                        </button>
+                        <button className="btn btn-default" onClick={() => this.props.dispatch(workerActions.getAll())}>
+                            Cancel
+                        </button>
+                    </div>
                     <button className="btn btn-success" onClick={() => this.showCreate()}>
                         Add New Worker
                     </button>
@@ -70,8 +83,11 @@ class HomePage extends React.Component {
                             <td>{worker.salary}</td>
                             <td>{worker.position}</td>
                             <td>
-                                <button className="btn btn-primary" onClick={() => this.showUpdate(worker)}>Update</button>
-                                <button className="btn btn-danger ml-15" onClick={() => this.handleDelete(worker._id)}>Delete</button>
+                                <button className="btn btn-primary" onClick={() => this.showUpdate(worker)}>Update
+                                </button>
+                                <button className="btn btn-danger ml-15"
+                                        onClick={() => this.handleDelete(worker._id)}>Delete
+                                </button>
                             </td>
                         </tr>
                     )}
@@ -87,12 +103,21 @@ class HomePage extends React.Component {
     }
 
     showCreate() {
-        this.setState({ showCreate: true });
+        this.setState({showCreate: true});
     };
 
     hideCreate() {
-        this.setState({ showCreate: false });
+        this.setState({showCreate: false});
     };
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value
+        });
+    }
 
     showUpdate(worker) {
         console.log(worker.salary);
@@ -110,7 +135,7 @@ class HomePage extends React.Component {
     }
 
     hideUpdate() {
-        this.setState({ showUpdate: false });
+        this.setState({showUpdate: false});
     };
 }
 

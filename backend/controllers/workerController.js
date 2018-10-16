@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
 
 var worker = require('../models/worker');
@@ -18,12 +18,12 @@ router.get('/', function (req, res) {
 // CREATE
 router.post('/', function (req, res) {
     worker.create({
-            fullName : req.body.fullName,
-            gender : req.body.gender,
-            contactInfo : req.body.contactInfo,
-            dateCreated : req.body.dateCreated,
-            salary : req.body.salary,
-            position : req.body.position
+            fullName: req.body.fullName,
+            gender: req.body.gender,
+            contactInfo: req.body.contactInfo,
+            dateCreated: req.body.dateCreated,
+            salary: req.body.salary,
+            position: req.body.position
         },
         function (err, worker) {
             if (err) return res.status(500).send("There was a problem adding the information to the database.");
@@ -53,6 +53,15 @@ router.put('/:id', function (req, res) {
     worker.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, worker) {
         if (err) return res.status(500).send("There was a problem updating the worker.");
         res.status(200).send(worker);
+    });
+});
+
+router.get('/search/:query', function (req, res) {
+    worker.find({$text: {
+            $search: req.params.query
+        }} , function(err, workers) {
+        if (err) return res.status(500).send("There was a problem searching workers.");
+        res.status(200).send(workers);
     });
 });
 

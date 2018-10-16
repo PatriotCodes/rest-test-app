@@ -5,7 +5,8 @@ export const workerApi = {
     getAll,
     deleteByID,
     create,
-    update
+    update,
+    search
 };
 
 function getAll() {
@@ -40,6 +41,14 @@ function update(worker) {
         body: JSON.stringify(worker),
     };
     return fetch(apiConstants.URL + '/workers/' + worker._id, requestOptions).then(handleResponse);
+}
+
+function search(query) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(),
+    };
+    return fetch(apiConstants.URL + '/workers/search/' + query, requestOptions).then(handleResponse);
 }
 
 function logout() {

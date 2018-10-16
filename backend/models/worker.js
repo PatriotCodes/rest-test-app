@@ -21,6 +21,7 @@ var WorkerSchema = new mongoose.Schema({
         type: String,
     },
 });
+WorkerSchema.index({'$**': 'text'});
 
 mongoose.model('Worker', WorkerSchema);
 

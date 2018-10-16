@@ -37,8 +37,11 @@ export function workerReducer(state = initialState, action) {
         case workerConstants.UPDATE_WORKER:
             return {
                 ...state,
-                workers: updateObjectInArray(state.workers, action)
+                workers: updateObjectInArray(state.workers, action.worker)
             };
+        case workerConstants.SEARCH_WORKER:
+            state = Object.assign({}, state, {workers: action.workers, loading: false});
+            return state;
         default:
             return state
     }
@@ -50,13 +53,13 @@ function updateObjectInArray(array, action) {
             return item;
         }
         return {
-            _id: action.worker._id,
-            fullName: action.worker.fullName,
-            gender: action.worker.gender,
-            contactInfo: action.worker.contactInfo,
-            dateCreate: action.worker.dateCreate,
-            salary: action.worker.salary,
-            position: action.worker.position,
+            _id: action._id,
+            fullName: action.fullName,
+            gender: action.gender,
+            contactInfo: action.contactInfo,
+            dateCreate: action.dateCreate,
+            salary: action.salary,
+            position: action.position,
         };
     });
 }

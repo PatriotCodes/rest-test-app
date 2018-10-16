@@ -4,4 +4,5 @@ export const workerConstants = {
     DELETE_WORKER: 'DELETE_WORKER',
     UPDATE_WORKER: 'UPDATE_WORKER',
     LOADING: 'LOADING',
+    SEARCH_WORKER: 'SEARCH_WORKER',
 };

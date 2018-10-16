@@ -6,6 +6,7 @@ export const workerActions = {
     deleteWorker,
     createWorker,
     updateWorker,
+    searchWorker,
 };
 
 export function getAll() {
@@ -73,5 +74,22 @@ export function updateWorker(worker) {
 function updateWorkerSuccess(worker) {
     return (dispatch) => {
         dispatch({type: workerConstants.UPDATE_WORKER, worker: worker});
+    };
+}
+
+export function searchWorker(query) {
+    return (dispatch) => {
+        dispatch({type: workerConstants.LOADING});
+        return workerApi.search(query).then((response) => {
+            dispatch(searchWorkerSuccess(response));
+        }).catch(error => {
+            throw(error);
+        });
+    };
+}
+
+function searchWorkerSuccess(workers) {
+    return (dispatch) => {
+        dispatch({type: workerConstants.SEARCH_WORKER, workers: workers});
     };
 }
