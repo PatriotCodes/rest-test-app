@@ -36,64 +36,67 @@ class HomePage extends React.Component {
 
     render() {
         return (
-            <div className="col-sm-12">
-                <div className="home-top">
-                    <div className="search-wrap">
-                        <input type="text" className="form-control" placeholder="Search..."
-                               name="searchQuery" onChange={this.handleInputChange}/>
-                        <button className="btn btn-primary"
-                                onClick={() => this.props.dispatch(workerActions.searchWorker(this.state.searchQuery))}>
-                            Search
+            <div className="row">
+                <div className="col-sm-12">
+                    <div className="home-top">
+                        <div className="search-wrap">
+                            <input type="text" className="form-control" placeholder="Search..."
+                                   name="searchQuery" onChange={this.handleInputChange}/>
+                            <button className="btn btn-primary"
+                                    onClick={() => this.props.dispatch(workerActions.searchWorker(this.state.searchQuery))}>
+                                Search
+                            </button>
+                            <button className="btn btn-default"
+                                    onClick={() => this.props.dispatch(workerActions.getAll())}>
+                                Cancel
+                            </button>
+                        </div>
+                        <button className="btn btn-success" onClick={() => this.showCreate()}>
+                            Add New Worker
                         </button>
-                        <button className="btn btn-default" onClick={() => this.props.dispatch(workerActions.getAll())}>
-                            Cancel
+                        <button className="btn btn-danger float-right">
+                            <Link className="logout-link" to="/login">Logout</Link>
                         </button>
                     </div>
-                    <button className="btn btn-success" onClick={() => this.showCreate()}>
-                        Add New Worker
-                    </button>
-                    <button className="btn btn-default float-right">
-                        <Link to="/login">Logout</Link>
-                    </button>
-                </div>
-                <Modal show={this.state.showCreate}>
-                    <WorkerCreate closeHandler={this.hideCreate}/>
-                </Modal>
-                <Modal show={this.state.showUpdate}>
-                    <WorkerUpdate closeHandler={this.hideUpdate} worker={this.state.editedWorker}/>
-                </Modal>
-                {!this.props.loading &&
-                <table className="table table-condensed">
-                    <thead>
-                    <tr>
-                        <th>Full Name</th>
-                        <th>Gender</th>
-                        <th>Contact Info</th>
-                        <th>Salary</th>
-                        <th>Position</th>
-                        <th>Controls</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.props.workers.map((worker) =>
-                        <tr key={worker._id}>
-                            <td>{worker.fullName}</td>
-                            <td>{worker.gender}</td>
-                            <td>{worker.contactInfo}</td>
-                            <td>{worker.salary}</td>
-                            <td>{worker.position}</td>
-                            <td>
-                                <button className="btn btn-primary" onClick={() => this.showUpdate(worker)}>Update
-                                </button>
-                                <button className="btn btn-danger ml-15"
-                                        onClick={() => this.handleDelete(worker._id)}>Delete
-                                </button>
-                            </td>
+                    <Modal show={this.state.showCreate}>
+                        <WorkerCreate closeHandler={this.hideCreate}/>
+                    </Modal>
+                    <Modal show={this.state.showUpdate}>
+                        <WorkerUpdate closeHandler={this.hideUpdate} worker={this.state.editedWorker}/>
+                    </Modal>
+                    {!this.props.loading &&
+                    <table className="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Gender</th>
+                            <th>Contact Info</th>
+                            <th>Salary</th>
+                            <th>Position</th>
+                            <th>Controls</th>
                         </tr>
-                    )}
-                    </tbody>
-                </table>
-                }
+                        </thead>
+                        <tbody>
+                        {this.props.workers.map((worker) =>
+                            <tr key={worker._id}>
+                                <td>{worker.fullName}</td>
+                                <td>{worker.gender}</td>
+                                <td>{worker.contactInfo}</td>
+                                <td>{worker.salary}</td>
+                                <td>{worker.position}</td>
+                                <td>
+                                    <button className="btn btn-primary" onClick={() => this.showUpdate(worker)}>Update
+                                    </button>
+                                    <button className="btn btn-danger ml-15"
+                                            onClick={() => this.handleDelete(worker._id)}>Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                    }
+                </div>
             </div>
         );
     }

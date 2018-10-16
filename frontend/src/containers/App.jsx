@@ -23,17 +23,15 @@ class App extends React.Component {
         const {alert} = this.props;
         return (
             <div className="container">
-                <div className="row">
-                    {alert.message &&
-                    <div className={`alert ${alert.type}`}>{alert.message}</div>
-                    }
-                    <Router history={history}>
-                        <div>
-                            <PrivateRoute exact path="/" component={HomePage}/>
-                            <Route path="/login" component={LoginPage}/>
-                        </div>
-                    </Router>
-                </div>
+                {alert.message &&
+                <div className={`alert ${alert.type}`}>{alert.message}</div>
+                }
+                <Router history={history}>
+                    <div>
+                        <PrivateRoute exact path="/" component={HomePage}/>
+                        <Route path="/login" component={LoginPage}/>
+                    </div>
+                </Router>
             </div>
         );
     }
