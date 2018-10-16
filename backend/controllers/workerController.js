@@ -44,7 +44,7 @@ router.get('/:id', function (req, res) {
 router.delete('/:id', function (req, res) {
     worker.findByIdAndRemove(req.params.id, function (err, worker) {
         if (err) return res.status(500).send("There was a problem deleting the worker.");
-        res.status(200).send("Worker "+ worker.fullName +" was deleted.");
+        res.status(200).send(worker);
     });
 });
 

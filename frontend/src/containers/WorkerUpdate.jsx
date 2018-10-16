@@ -1,30 +1,49 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {createWorker} from "../actions";
+import {updateWorker} from "../actions";
 import '../assets/scss/styles.scss';
 
-class WorkerCreate extends React.Component {
+class WorkerUpdate extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            gender : 'male',
+            worker: {
+                fullName: '',
+                gender: '',
+                contactInfo: '',
+                salary: '',
+                position: '',
+            },
         };
-        this.handleSubmitCreate = this.handleSubmitCreate.bind(this);
+        this.handleSubmitUpdate = this.handleSubmitUpdate.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
 
-    handleSubmitCreate(event) {
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            worker: {
+                fullName: nextProps.worker.fullName != null ? nextProps.worker.fullName : '',
+                gender: nextProps.worker.gender != null ? nextProps.worker.gender : '',
+                contactInfo: nextProps.worker.contactInfo != null ? nextProps.worker.contactInfo : '',
+                salary: nextProps.worker.salary != null ? nextProps.worker.salary : '',
+                position: nextProps.worker.position != null ? nextProps.worker.position : '',
+            },
+        });
+    }
+
+    handleSubmitUpdate(event) {
         event.preventDefault();
         let worker = {};
-        worker['fullName'] = this.state.fullName;
-        worker['gender'] = this.state.gender;
-        worker['contactInfo'] = this.state.contactInfo;
-        worker['salary'] = this.state.salary;
-        worker['position'] = this.state.position;
-        this.props.dispatch(createWorker(worker));
+        worker['_id'] = this.props.worker._id;
+        worker['fullName'] = this.state.worker.fullName;
+        worker['gender'] = this.state.worker.gender;
+        worker['contactInfo'] = this.state.worker.contactInfo;
+        worker['salary'] = this.state.worker.salary;
+        worker['position'] = this.state.worker.position;
+        this.props.dispatch(updateWorker(worker));
         this.props.closeHandler();
     }
 
@@ -38,17 +57,19 @@ class WorkerCreate extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         this.setState({
-            [name]: value
+            worker: {
+                [name]: value
+            }
         });
     }
 
     render() {
         return (
-            <form className="p-15" onSubmit={this.handleSubmitCreate}>
+            <form className="p-15" onSubmit={this.handleSubmitUpdate}>
                 <div className="form-group">
                     <label>FullName</label>
                     <input type="text" className="form-control" placeholder="Full Name"
-                           name="fullName" onChange={this.handleInputChange}/>
+                           name="fullName" value={this.state.worker.fullName} onChange={this.handleInputChange}/>
                 </div>
                 <div className="form-group">
                     <label>Gender</label>
@@ -60,19 +81,19 @@ class WorkerCreate extends React.Component {
                 <div className="form-group">
                     <label>Contact Info</label>
                     <input type="text" className="form-control" placeholder="Contact Info"
-                           name="contactInfo" onChange={this.handleInputChange}/>
+                           name="contactInfo" value={this.state.worker.contactInfo} onChange={this.handleInputChange}/>
                 </div>
                 <div className="form-group">
                     <label>Salary</label>
                     <input type="text" className="form-control" placeholder="Salary"
-                           name="salary" onChange={this.handleInputChange}/>
+                           name="salary" value={this.state.worker.salary} onChange={this.handleInputChange}/>
                 </div>
                 <div className="form-group">
                     <label>Position</label>
                     <input type="text" className="form-control" placeholder="Position"
-                           name="position" onChange={this.handleInputChange}/>
+                           name="position" value={this.state.worker.position} onChange={this.handleInputChange}/>
                 </div>
-                <button className="btn btn-primary">Add Worker</button>
+                <button className="btn btn-primary">Update Worker</button>
                 <button className="btn btn-danger ml-15" onClick={this.handleClose}>Cancel</button>
             </form>
         );
@@ -85,5 +106,5 @@ function mapStateToProps(state) {
     }
 }
 
-const connectedWorkerCreate = connect(mapStateToProps)(WorkerCreate);
-export {connectedWorkerCreate as WorkerCreate};
+const connectedWorkerUpdate = connect(mapStateToProps)(WorkerUpdate);
+export {connectedWorkerUpdate as WorkerUpdate};

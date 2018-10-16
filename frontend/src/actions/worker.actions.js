@@ -5,6 +5,7 @@ export const workerActions = {
     getAll,
     deleteWorker,
     createWorker,
+    updateWorker,
 };
 
 export function getAll() {
@@ -44,8 +45,8 @@ function deleteWorkerSuccess(id) {
 export function createWorker(worker) {
     return (dispatch) => {
         dispatch({type: workerConstants.LOADING});
-        return workerApi.create(worker).then(() => {
-            dispatch(createWorkerSuccess(worker));
+        return workerApi.create(worker).then((response) => {
+            dispatch(createWorkerSuccess(response));
         }).catch(error => {
             throw(error);
         });
@@ -55,5 +56,22 @@ export function createWorker(worker) {
 function createWorkerSuccess(worker) {
     return (dispatch) => {
         dispatch({type: workerConstants.CREATE_WORKER, worker: worker});
+    };
+}
+
+export function updateWorker(worker) {
+    return (dispatch) => {
+        dispatch({type: workerConstants.LOADING});
+        return workerApi.update(worker).then((response) => {
+            dispatch(updateWorkerSuccess(response));
+        }).catch(error => {
+            throw(error);
+        });
+    };
+}
+
+function updateWorkerSuccess(worker) {
+    return (dispatch) => {
+        dispatch({type: workerConstants.UPDATE_WORKER, worker: worker});
     };
 }

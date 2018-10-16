@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {Modal} from "../components";
 import {workerActions} from '../actions/worker.actions';
 import {WorkerCreate} from './WorkerCreate';
+import {WorkerUpdate} from "./WorkerUpdate";
 import '../assets/scss/styles.scss';
 
 class HomePage extends React.Component {
@@ -12,9 +13,19 @@ class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showCreate : false,
+            showCreate: false,
+            showUpdate: false,
+            editedWorker: {
+                _id: '',
+                fullName: '',
+                gender: '',
+                contactInfo: '',
+                salary: '',
+                position: '',
+            },
         };
         this.hideCreate = this.hideCreate.bind(this);
+        this.hideUpdate = this.hideUpdate.bind(this);
     }
 
     componentDidMount() {
@@ -34,6 +45,9 @@ class HomePage extends React.Component {
                 </div>
                 <Modal show={this.state.showCreate}>
                     <WorkerCreate closeHandler={this.hideCreate}/>
+                </Modal>
+                <Modal show={this.state.showUpdate}>
+                    <WorkerUpdate closeHandler={this.hideUpdate} worker={this.state.editedWorker}/>
                 </Modal>
                 {!this.props.loading &&
                 <table className="table table-condensed">
@@ -56,7 +70,7 @@ class HomePage extends React.Component {
                             <td>{worker.salary}</td>
                             <td>{worker.position}</td>
                             <td>
-                                <button className="btn btn-primary">Update</button>
+                                <button className="btn btn-primary" onClick={() => this.showUpdate(worker)}>Update</button>
                                 <button className="btn btn-danger ml-15" onClick={() => this.handleDelete(worker._id)}>Delete</button>
                             </td>
                         </tr>
@@ -78,6 +92,25 @@ class HomePage extends React.Component {
 
     hideCreate() {
         this.setState({ showCreate: false });
+    };
+
+    showUpdate(worker) {
+        console.log(worker.salary);
+        this.setState({
+            showUpdate: true,
+            editedWorker: {
+                _id: worker._id,
+                fullName: worker.fullName != null ? worker.fullName : '',
+                gender: worker.gender != null ? worker.gender : '',
+                contactInfo: worker.contactInfo != null ? worker.contactInfo : '',
+                salary: worker.salary != null ? worker.salary : '',
+                position: worker.position != null ? worker.position : '',
+            }
+        });
+    }
+
+    hideUpdate() {
+        this.setState({ showUpdate: false });
     };
 }
 

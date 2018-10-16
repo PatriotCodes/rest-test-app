@@ -4,7 +4,8 @@ import {authHeader} from "../helpers";
 export const workerApi = {
     getAll,
     deleteByID,
-    create
+    create,
+    update
 };
 
 function getAll() {
@@ -30,6 +31,15 @@ function create(worker) {
         body: JSON.stringify(worker),
     };
     return fetch(apiConstants.URL + '/workers/', requestOptions).then(handleResponse);
+}
+
+function update(worker) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: authHeader(),
+        body: JSON.stringify(worker),
+    };
+    return fetch(apiConstants.URL + '/workers/' + worker._id, requestOptions).then(handleResponse);
 }
 
 function logout() {
